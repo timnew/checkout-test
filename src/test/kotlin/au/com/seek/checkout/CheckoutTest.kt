@@ -1,45 +1,95 @@
 package au.com.seek.checkout
 
+import io.mockk.spyk
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
+import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.Ignore
 import org.junit.Test
 
 class CheckoutTest {
-    lateinit var pricingRules: List<PricingRule>
+    private val customer = "customer"
 
-    val classic = Product("Classic Ad", 269.99)
-    val standout = Product("Stand out Ad", 322.99)
-    val premium = Product("Premium Ad", 394.99)
+    private val product = Product("Product", 100.0)
 
-    @Before
-    fun setUp() {
-        pricingRules = listOf()
+    @Test
+    fun `should create checkout`() {
+        val checkout = Checkout()
+
+        assertThat(checkout.customer).isEqualTo("default")
+        assertThat(checkout.items).isEmpty()
+        assertThat(checkout.isSealed).isFalse()
+
+        assertThat(checkout.total).isZero()
+    }
+
+    @Ignore("not sure why calculatedTotal invocation cannot be captured")
+    @Test
+    fun `should not calculate price twice`() {
+        val checkout = spyk(Checkout())
+
+        checkout.add(product)
+
+        assertThat(checkout.total).isEqualTo(product.price)
+        assertThat(checkout.total).isEqualTo(product.price)
+
+        verify(exactly = 1) {
+            checkout["calculateTotal"]()
+        }
     }
 
     @Test
-    fun `should handle empty list`() {
-        val checkout = Checkout(pricingRules)
+    fun `should seal checkout after calculate price`() {
+        val checkout = Checkout()
 
-        assertThat(checkout.total).isEqualTo(0.0)
+        checkout.add(product)
+
+        assertThat(checkout.total).isEqualTo(product.price)
+
+        assertThat(checkout.isSealed).isTrue()
     }
 
     @Test
-    fun `should calculate 1 product prices`() {
-        val checkout = Checkout(pricingRules)
+    fun `should throw sealed exception when update sealed checkout`() {
+        val checkout = Checkout()
 
-        checkout.add(classic)
+        checkout.add(product)
 
-        assertThat(checkout.total).isEqualTo(269.99)
+        assertThat(checkout.total).isEqualTo(product.price)
+
+        assertThat(checkout.isSealed).isTrue()
+
+        assertThatThrownBy { checkout.add(product) }
+                .isInstanceOf(SealedCheckoutException::class.java)
+                .hasMessage("Cannot update sealed checkout")
+
     }
 
     @Test
-    fun `should calculate all product prices`() {
-        val checkout = Checkout(pricingRules)
+    fun `should add product as item`() {
+        val checkout = Checkout(listOf(), customer = customer)
 
-        checkout.add(classic)
-        checkout.add(standout)
-        checkout.add(premium)
+        checkout.add(product)
 
-        assertThat(checkout.total).isEqualTo(987.97)
+        val item = checkout.items.first()
+
+        assertThat(item.product).isEqualTo(product)
+        assertThat(item.finalPrice).isEqualTo(product.price)
+        assertThat(item.customer).isEqualTo(checkout.customer)
+    }
+
+    @Test
+    fun `should add product for different customer`() {
+        val newCustomer = "new customer"
+
+        val checkout = Checkout(listOf(), customer = customer)
+
+        checkout.add(product, newCustomer)
+
+        val item = checkout.items.first()
+
+        assertThat(item.product).isEqualTo(product)
+        assertThat(item.finalPrice).isEqualTo(product.price)
+        assertThat(item.customer).isEqualTo(newCustomer)
     }
 }

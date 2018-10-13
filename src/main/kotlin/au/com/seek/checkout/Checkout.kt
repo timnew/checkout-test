@@ -1,28 +1,38 @@
 package au.com.seek.checkout
 
 class Checkout(
-        private val rules: List<PricingRule> = listOf(),
-        private val customer: String = "default"
+        private val rules: List<PricingRule> = DEFAULT_PRICING_RULES,
+        val customer: String = DEFAULT_CUSTOMER
 ) {
     val items: List<Item>
         get() = mutableItems
 
     private val mutableItems: MutableList<Item> = mutableListOf()
 
+    var isSealed: Boolean = false
+        private set(value) {
+            field = value
+        }
+
+
     val total: Double by lazy { calculateTotal() }
 
     private fun calculateTotal(): Double {
-        applyRules()
+        isSealed = true
+
+        rules.forEach { it.createVisitor().visit(this) }
 
         return items.sumByDouble { it.finalPrice }
     }
 
-    private fun applyRules() {
-        rules.forEach { it.createVisitor().visit(this) }
+    fun add(product: Product, productCustomer: String? = null) {
+        if (isSealed) throw SealedCheckoutException()
+        mutableItems.add(Item(product, productCustomer ?: customer))
     }
 
-    fun add(product: Product, productCustomer: String? = null) {
-        mutableItems.add(Item(product, productCustomer ?: customer))
+    companion object {
+        val DEFAULT_PRICING_RULES = emptyList<PricingRule>()
+        const val DEFAULT_CUSTOMER = "default"
     }
 
     data class Item(
@@ -37,6 +47,7 @@ class Checkout(
             adjustedPrice = price
         }
 
-        val finalPrice: Double = adjustedPrice ?: product.price
+        val finalPrice: Double
+            get() = adjustedPrice ?: product.price
     }
 }
