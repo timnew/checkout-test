@@ -60,3 +60,4 @@ Good luck, have fun with it, and we look forward to meeting you soon!
 1. High priority pricing rule
 2. List all items' price after discount
 3. Can get 1 Jora membership for free when purchased every another 10 items.
+4. List which discount rule applied to each item

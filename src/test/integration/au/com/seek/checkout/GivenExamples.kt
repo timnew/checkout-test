@@ -2,8 +2,10 @@ package au.com.seek.checkout
 
 import au.com.seek.checkout.pricingrules.CustomerProductDiscount
 import au.com.seek.checkout.pricingrules.CustomerXForY
+import au.com.seek.checkout.pricingrules.GeneralBundlePurchaseExclusiveDiscount
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.data.Offset
 import org.junit.Test
 
 class GivenExamples {
@@ -21,7 +23,9 @@ class GivenExamples {
             CustomerProductDiscount(axilCoffeeRoassters, standout.name, 299.99),
 
             CustomerXForY(myer, 5, 4, standout.name),
-            CustomerProductDiscount(myer, premium.name, 389.99)
+            CustomerProductDiscount(myer, premium.name, 389.99),
+
+            GeneralBundlePurchaseExclusiveDiscount(10, .5)
     )
 
 
@@ -59,5 +63,15 @@ class GivenExamples {
         checkout.add(premium)
 
         assertThat(checkout.total).isEqualTo(1294.96)
+    }
+
+    @Test
+    fun `example for bundle purchase`() {
+        val checkout = Checkout(pricingRules, axilCoffeeRoassters)
+
+        (1..10).forEach { checkout.add(standout) }
+        checkout.add(premium)
+
+        Assertions.assertThat(checkout.total).isCloseTo(2009.94, Offset.offset(.01))
     }
 }

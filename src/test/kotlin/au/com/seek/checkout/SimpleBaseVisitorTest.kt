@@ -1,5 +1,6 @@
 package au.com.seek.checkout
 
+import au.com.seek.checkout.Checkout.Item.Companion.TAG_FINAL
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
@@ -53,6 +54,25 @@ class SimpleBaseVisitorTest {
             visitor.visit(eq(item2))
             visitor.isMatch(eq(item2))
             visitor.applyRule(eq(item2))
+
+            visitor.visit(eq(item3))
+            visitor.isMatch(eq(item3))
+        }
+    }
+
+    @Test
+    fun `it should skip final items`() {
+        every { item2.isFinal } returns true
+        every { item2.hasTag(TAG_FINAL) } returns true
+
+        visitor.visit(checkout)
+
+        verifySequence {
+            visitor.visit(eq(checkout))
+
+            visitor.visit(eq(item1))
+            visitor.isMatch(eq(item1))
+            visitor.applyRule(eq(item1))
 
             visitor.visit(eq(item3))
             visitor.isMatch(eq(item3))

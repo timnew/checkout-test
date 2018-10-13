@@ -8,6 +8,7 @@ interface PricingRule {
     fun createVisitor(): Visitor
 
     companion object {
+        const val HIGH_PRIORITY = 50
         const val DEFAULT_PRIORITY = 100
     }
 

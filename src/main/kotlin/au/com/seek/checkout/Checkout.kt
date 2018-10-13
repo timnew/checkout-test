@@ -1,9 +1,11 @@
 package au.com.seek.checkout
 
 class Checkout(
-        private val rules: List<PricingRule> = DEFAULT_PRICING_RULES,
+        pricingRules: List<PricingRule> = DEFAULT_PRICING_RULES,
         val customer: String = DEFAULT_CUSTOMER
 ) {
+    val rules: List<PricingRule> = pricingRules.sortedBy(PricingRule::priority)
+
     val items: List<Item>
         get() = mutableItems
 
@@ -43,11 +45,30 @@ class Checkout(
 
         private var adjustedPrice: Double? = null
 
+        val tags: Set<String>
+            get() = mutableTags
+
+        private val mutableTags: MutableSet<String> = mutableSetOf<String>()
+
+        fun addTags(vararg newTags: String) =
+                mutableTags.addAll(newTags)
+
+        fun markFinal() = addTags(TAG_FINAL)
+
+        fun hasTag(tag: String): Boolean = tags.contains(tag)
+
+        val isFinal: Boolean
+            get() = hasTag(TAG_FINAL)
+
         fun adjustPrice(price: Double) {
             adjustedPrice = price
         }
 
         val finalPrice: Double
             get() = adjustedPrice ?: product.price
+
+        companion object {
+            const val TAG_FINAL: String = "Final"
+        }
     }
 }

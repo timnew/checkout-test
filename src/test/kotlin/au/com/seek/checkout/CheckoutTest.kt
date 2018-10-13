@@ -1,7 +1,6 @@
 package au.com.seek.checkout
 
-import io.mockk.spyk
-import io.mockk.verify
+import io.mockk.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Ignore
@@ -91,5 +90,22 @@ class CheckoutTest {
         assertThat(item.product).isEqualTo(product)
         assertThat(item.finalPrice).isEqualTo(product.price)
         assertThat(item.customer).isEqualTo(newCustomer)
+    }
+
+    @Test
+    fun `should sort pricing rules by priority`() {
+        val rule1 = mockkClass(PricingRule::class, "rule1", relaxed = true)
+        val rule2 = mockkClass(PricingRule::class, "rule2", relaxed = true)
+        val rule3 = mockkClass(PricingRule::class, "rule3", relaxed = true)
+
+        every { rule1.priority } returns 1
+        every { rule2.priority } returns 2
+        every { rule3.priority } returns 3
+
+        val checkout = Checkout(pricingRules = listOf(rule3, rule1, rule2))
+
+        assertThat(checkout.rules)
+                .extracting("priority")
+                .containsExactly(1, 2, 3)
     }
 }

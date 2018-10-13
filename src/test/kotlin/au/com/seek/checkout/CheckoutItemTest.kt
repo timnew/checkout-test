@@ -1,5 +1,6 @@
 package au.com.seek.checkout
 
+import au.com.seek.checkout.Checkout.Item.Companion.TAG_FINAL
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -15,6 +16,32 @@ class CheckoutItemTest {
     @Before
     fun setUp() {
         item = Checkout.Item(product, customer)
+    }
+
+    @Test
+    fun `has no tags`() {
+        assertThat(item.tags).isEmpty()
+    }
+
+    @Test
+    fun `is not final`() {
+        assertThat(item.isFinal).isFalse()
+    }
+
+    @Test
+    fun `can mark as final`() {
+        item.markFinal()
+
+        assertThat(item.isFinal).isTrue()
+        assertThat(item.hasTag(TAG_FINAL)).isTrue()
+    }
+
+    @Test
+    fun `can add tags`() {
+        item.addTags("A", "B")
+
+        assertThat(item.hasTag("A")).isTrue()
+        assertThat(item.hasTag("B")).isTrue()
     }
 
     @Test
