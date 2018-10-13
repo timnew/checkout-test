@@ -48,17 +48,6 @@ class GeneralBundlePurchaseExclusiveDiscountTest {
         assertThat(rule.priority).isEqualTo(PricingRule.HIGH_PRIORITY)
     }
 
-    @Test
-    fun `should populate qualified products`() {
-        assertThat(visitor.qualifiedProducts).containsExactlyInAnyOrder(product1.name, product2.name)
-    }
-
-    @Test
-    fun `should only match qualified product`() {
-        assertThat(visitor.isMatch(itemForProduct1)).isTrue()
-        assertThat(visitor.isMatch(itemForProduct2)).isTrue()
-        assertThat(visitor.isMatch(itemForProduct3)).isFalse()
-    }
 
     @Test
     fun `should alter matched price by ratio`() {

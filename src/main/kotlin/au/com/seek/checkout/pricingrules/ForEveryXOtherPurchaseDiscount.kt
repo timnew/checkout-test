@@ -13,28 +13,22 @@ class ForEveryXOtherPurchaseDiscount(
 ) : PricingRule {
     override fun createVisitor(): Visitor = Visitor()
 
-    inner class Visitor : ItemBasedVisitor() {
-        private var remaining = 0
-
+    inner class Visitor : PricingRule.Visitor {
         override fun visit(checkout: Checkout) {
-            calcRemaining(checkout)
-
-            super.visit(checkout)
-        }
-
-        private fun calcRemaining(checkout: Checkout) {
-            remaining = checkout.items
+            val qualifiedCount = checkout.items
                     .filter { it.productName != productName }
                     .size / x
+
+            checkout.items
+                    .filter { it.productName == productName }
+                    .filterNot(Checkout.Item::isFinal)
+                    .take(qualifiedCount)
+                    .forEach(this::applyRule)
         }
 
-        override fun applyRule(item: Checkout.Item) {
+        private fun applyRule(item: Checkout.Item) {
             item.addTags(name)
             item.adjustPrice(discountedPrice)
-            remaining--
         }
-
-        override fun isMatch(item: Checkout.Item): Boolean =
-                item.productName == productName && remaining > 0
     }
 }

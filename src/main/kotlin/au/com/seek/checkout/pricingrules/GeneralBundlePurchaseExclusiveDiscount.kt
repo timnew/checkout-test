@@ -12,30 +12,21 @@ class GeneralBundlePurchaseExclusiveDiscount(
 ) : PricingRule {
     override fun createVisitor(): Visitor = Visitor()
 
-    inner class Visitor : ItemBasedVisitor() {
-        var qualifiedProducts: Set<String> = emptySet()
-            private set(value) {
-                field = value
-            }
+    inner class Visitor : PricingRule.Visitor {
 
         override fun visit(checkout: Checkout) {
-            qualifiedProducts = checkout.items
+            checkout.items
                     .groupBy { it.productName }
                     .filter { it.value.size >= minimumVolume }
-                    .map { it.key }
-                    .toSet()
-
-            super.visit(checkout)
+                    .flatMap { it.value }
+                    .filterNot(Checkout.Item::isFinal)
+                    .forEach(this::applyRule)
         }
 
-        override fun applyRule(item: Checkout.Item) {
+        private fun applyRule(item: Checkout.Item) {
             item.adjustPrice(item.product.price * discountRatio)
             item.markFinal()
             item.addTags(name)
         }
-
-        override fun isMatch(item: Checkout.Item): Boolean =
-                qualifiedProducts.contains(item.productName)
-
     }
 }
