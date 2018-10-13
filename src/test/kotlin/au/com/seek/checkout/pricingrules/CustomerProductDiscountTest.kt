@@ -32,10 +32,6 @@ class CustomerProductDiscountTest {
         val item = Checkout.Item(fullPriceProduct, normalCustomer)
 
         assertThat(visitor.isMatch(item)).isFalse()
-
-        visitor.visit(item)
-
-        assertThat(item.finalPrice).isEqualTo(fullPrice)
     }
 
     @Test
@@ -44,7 +40,7 @@ class CustomerProductDiscountTest {
 
         assertThat(visitor.isMatch(item)).isTrue()
 
-        visitor.visit(item)
+        visitor.applyRule(item)
 
         assertThat(item.finalPrice).isEqualTo(discountedPrice)
     }
@@ -54,10 +50,6 @@ class CustomerProductDiscountTest {
         val item = Checkout.Item(discountedProduct, normalCustomer)
 
         assertThat(visitor.isMatch(item)).isFalse()
-
-        visitor.visit(item)
-
-        assertThat(item.finalPrice).isEqualTo(fullPrice)
     }
 
     @Test
@@ -65,9 +57,5 @@ class CustomerProductDiscountTest {
         val item = Checkout.Item(fullPriceProduct, discountedCustomer)
 
         assertThat(visitor.isMatch(item)).isFalse()
-
-        visitor.visit(item)
-
-        assertThat(item.finalPrice).isEqualTo(fullPrice)
     }
 }

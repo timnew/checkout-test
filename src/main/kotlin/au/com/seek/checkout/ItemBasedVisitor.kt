@@ -4,13 +4,8 @@ abstract class ItemBasedVisitor : PricingRule.Visitor {
     override fun visit(checkout: Checkout) {
         checkout.items
                 .filterNot(Checkout.Item::isFinal)
-                .forEach(this::visit)
-    }
-
-    open fun visit(item: Checkout.Item) {
-        if (isMatch(item)) {
-            applyRule(item)
-        }
+                .filter(this::isMatch)
+                .forEach(this::applyRule)
     }
 
     abstract fun applyRule(item: Checkout.Item)

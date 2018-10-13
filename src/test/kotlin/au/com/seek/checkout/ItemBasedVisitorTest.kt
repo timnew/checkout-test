@@ -32,7 +32,6 @@ class ItemBasedVisitorTest {
         MockKAnnotations.init(this)
 
         every { visitor.visit(any<Checkout>()) } answers { callOriginal() }
-        every { visitor.visit(any<Checkout.Item>()) } answers { callOriginal() }
 
         every { checkout.items } returns listOf(item1, item2, item3)
 
@@ -47,16 +46,13 @@ class ItemBasedVisitorTest {
         verifySequence {
             visitor.visit(eq(checkout))
 
-            visitor.visit(eq(item1))
             visitor.isMatch(eq(item1))
-            visitor.applyRule(eq(item1))
-
-            visitor.visit(eq(item2))
             visitor.isMatch(eq(item2))
+            visitor.isMatch(eq(item3))
+
+            visitor.applyRule(eq(item1))
             visitor.applyRule(eq(item2))
 
-            visitor.visit(eq(item3))
-            visitor.isMatch(eq(item3))
         }
     }
 
@@ -70,12 +66,11 @@ class ItemBasedVisitorTest {
         verifySequence {
             visitor.visit(eq(checkout))
 
-            visitor.visit(eq(item1))
-            visitor.isMatch(eq(item1))
+             visitor.isMatch(eq(item1))
+             visitor.isMatch(eq(item3))
+
             visitor.applyRule(eq(item1))
 
-            visitor.visit(eq(item3))
-            visitor.isMatch(eq(item3))
         }
     }
 }
