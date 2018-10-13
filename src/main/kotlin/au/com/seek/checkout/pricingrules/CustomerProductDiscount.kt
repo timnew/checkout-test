@@ -14,8 +14,10 @@ class CustomerProductDiscount(
     override fun createVisitor(): PricingRule.Visitor = object : ItemBasedVisitor() {
         override fun applyRule(item: Checkout.Item) {
             item.adjustPrice(discountPrice)
+            item.addTags(name)
         }
 
-        override fun isMatch(item: Checkout.Item): Boolean = item.customer == customer && item.productName == productName
+        override fun isMatch(item: Checkout.Item): Boolean =
+                item.customer == customer && item.productName == productName
     }
 }

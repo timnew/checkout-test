@@ -22,6 +22,7 @@ class CustomerXForY(
 
             if (count > y) {
                 item.adjustPrice(0.0)
+                item.addTags(name)
             }
 
             if (count == x) {
