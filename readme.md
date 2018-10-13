@@ -5,11 +5,11 @@ We are interested in seeing your coding, problem solving and collaboration style
 For the purpose of this exercise, SEEK is in the process of rewriting its job ads checkout system.
 We want to offer different products to recruiters:
 
-Name         | Description                                                                                                         | Retail
--------------+---------------------------------------------------------------------------------------------------------------------+-------
-Classic Ad   | Offers the most basic level of advertisement                                                                        | $269.99
-Stand out Ad | Allows advertisers to use a company logo and use a longer presentation text                                         | $322.99
-Premium Ad   | Same benefits as Standout Ad, but also puts the advertisement at the top of the results, allowing higher visibility | $394.99
+| Name   | Description  | Retail |
+|--------|--------------|--------|
+| Classic Ad | Offers the most basic level of advertisement | $269.99 |
+| Stand out Ad | Allows advertisers to use a company logo and use a longer presentation text | $322.99 |
+| Premium Ad   | Same benefits as Standout Ad, but also puts the advertisement at the top of the results, allowing higher visibility | $394.99 |
 
 We have established a number of special pricing rules for a small number of privileged customers:
 
