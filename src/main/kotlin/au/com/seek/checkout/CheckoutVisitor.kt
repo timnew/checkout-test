@@ -5,12 +5,12 @@ abstract class CheckoutVisitor {
         checkout.items.forEach(this::visit)
     }
 
-    protected open fun visit(item: Checkout.Item) {
+    open fun visit(item: Checkout.Item) {
         if (isMatch(item)) {
             applyRule(item)
         }
     }
 
-    protected abstract fun applyRule(item: Checkout.Item)
-    protected abstract fun isMatch(item: Checkout.Item): Boolean
+    abstract fun applyRule(item: Checkout.Item)
+    abstract fun isMatch(item: Checkout.Item): Boolean
 }
