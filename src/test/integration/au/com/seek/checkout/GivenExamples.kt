@@ -4,12 +4,12 @@ import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class IntegrationTest {
-    val pricingRules: List<PricingRule> = listOf()
+class GivenExamples {
+    private val pricingRules: List<PricingRule> = listOf()
 
-    val classic = Product("Classic Ad", 269.99)
-    val standout = Product("Stand out Ad", 322.99)
-    val premium = Product("Premium Ad", 394.99)
+    private val classic = Product("Classic Ad", 269.99)
+    private val standout = Product("Stand out Ad", 322.99)
+    private val premium = Product("Premium Ad", 394.99)
 
 
     @Test
