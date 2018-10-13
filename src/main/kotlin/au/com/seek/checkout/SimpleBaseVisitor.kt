@@ -1,7 +1,7 @@
 package au.com.seek.checkout
 
-abstract class CheckoutVisitor {
-    open fun visit(checkout: Checkout) {
+abstract class SimpleBaseVisitor : PricingRule.Visitor {
+    override fun visit(checkout: Checkout) {
         checkout.items.forEach(this::visit)
     }
 

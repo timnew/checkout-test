@@ -5,10 +5,14 @@ interface PricingRule {
 
     val priority: Int
 
-    fun createVisitor(): CheckoutVisitor
+    fun createVisitor(): Visitor
 
     companion object {
         const val DEFAULT_PRIORITY = 100
+    }
+
+    interface Visitor {
+        fun visit(checkout: Checkout)
     }
 }
 

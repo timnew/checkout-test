@@ -1,7 +1,7 @@
 package au.com.seek.checkout.pricingrules
 
 import au.com.seek.checkout.Checkout
-import au.com.seek.checkout.CheckoutVisitor
+import au.com.seek.checkout.SimpleBaseVisitor
 import au.com.seek.checkout.Product
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -20,15 +20,15 @@ class CustomerProductDiscountTest {
 
     private val pricingRule = CustomerProductDiscount(discountedCustomer, discountedProduct.name, discountedPrice)
 
-    lateinit var visitor: CheckoutVisitor
+    lateinit var visitor: SimpleBaseVisitor
 
     @Before
     fun setUp() {
-        visitor = pricingRule.createVisitor()
+        visitor = pricingRule.createVisitor() as SimpleBaseVisitor
     }
 
     @Test
-    fun `it should not impact normal price calucaltion`() {
+    fun `it should not impact normal price calculation`() {
         val item = Checkout.Item(fullPriceProduct, normalCustomer)
 
         assertThat(visitor.isMatch(item)).isFalse()

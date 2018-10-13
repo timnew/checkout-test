@@ -1,7 +1,7 @@
 package au.com.seek.checkout.pricingrules
 
 import au.com.seek.checkout.Checkout
-import au.com.seek.checkout.CheckoutVisitor
+import au.com.seek.checkout.SimpleBaseVisitor
 import au.com.seek.checkout.Product
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -22,7 +22,7 @@ class CustomerXForYTest {
 
     private val pricingRule = CustomerXForY(discountCustomer, x, y, discountProduct.name)
 
-    private lateinit var visitor: CheckoutVisitor
+    private lateinit var visitor: SimpleBaseVisitor
 
     @Before
     fun setUp() {

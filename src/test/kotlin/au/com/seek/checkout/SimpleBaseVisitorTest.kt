@@ -8,7 +8,7 @@ import io.mockk.verifySequence
 import org.junit.Before
 import org.junit.Test
 
-class CheckoutVisitorTest {
+class SimpleBaseVisitorTest {
 
     @SpyK(recordPrivateCalls = true)
     var checkout: Checkout = Checkout()
@@ -23,7 +23,7 @@ class CheckoutVisitorTest {
     lateinit var item3: Checkout.Item
 
     @RelaxedMockK
-    lateinit var visitor: CheckoutVisitor
+    lateinit var visitor: SimpleBaseVisitor
 
 
     @Before
