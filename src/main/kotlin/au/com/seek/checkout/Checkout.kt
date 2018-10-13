@@ -2,9 +2,13 @@ package au.com.seek.checkout
 
 class Checkout(
         private val rules: List<PricingRule> = listOf(),
-        private val customer: String = "default",
-        val items: MutableList<Item> = mutableListOf()
+        private val customer: String = "default"
 ) {
+    val items: List<Item>
+        get() = mutableItems
+
+    private val mutableItems: MutableList<Item> = mutableListOf()
+
     val total: Double by lazy { calculateTotal() }
 
     private fun calculateTotal(): Double {
@@ -18,7 +22,7 @@ class Checkout(
     }
 
     fun add(product: Product, productCustomer: String? = null) {
-        items.add(Item(product, productCustomer ?: customer))
+        mutableItems.add(Item(product, productCustomer ?: customer))
     }
 
     data class Item(
