@@ -56,3 +56,7 @@ Please bring your laptop to the interview, or let us know beforehand if you woul
 Good luck, have fun with it, and we look forward to meeting you soon!
 
 
+## Additional Requirements
+1. High priority pricing rule
+2. List all items' price after discount
+3. Can get 1 Jora membership for free when purchased every another 10 items.
