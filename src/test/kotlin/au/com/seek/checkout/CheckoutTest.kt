@@ -20,7 +20,7 @@ class CheckoutTest {
     fun `should handle empty list`() {
         val checkout = Checkout(pricingRules)
 
-        assertThat(checkout.total()).isEqualTo(0.0)
+        assertThat(checkout.total).isEqualTo(0.0)
     }
 
     @Test
@@ -29,7 +29,7 @@ class CheckoutTest {
 
         checkout.add(classic)
 
-        assertThat(checkout.total()).isEqualTo(269.99)
+        assertThat(checkout.total).isEqualTo(269.99)
     }
 
     @Test
@@ -40,6 +40,6 @@ class CheckoutTest {
         checkout.add(standout)
         checkout.add(premium)
 
-        assertThat(checkout.total()).isEqualTo(987.97)
+        assertThat(checkout.total).isEqualTo(987.97)
     }
 }
