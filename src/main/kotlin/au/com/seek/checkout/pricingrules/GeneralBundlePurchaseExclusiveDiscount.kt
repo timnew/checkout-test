@@ -2,7 +2,7 @@ package au.com.seek.checkout.pricingrules
 
 import au.com.seek.checkout.Checkout
 import au.com.seek.checkout.PricingRule
-import au.com.seek.checkout.SimpleBaseVisitor
+import au.com.seek.checkout.ItemBasedVisitor
 
 class GeneralBundlePurchaseExclusiveDiscount(
         val minimumVolume: Int,
@@ -12,7 +12,7 @@ class GeneralBundlePurchaseExclusiveDiscount(
 ) : PricingRule {
     override fun createVisitor(): Visitor = Visitor()
 
-    inner class Visitor : SimpleBaseVisitor() {
+    inner class Visitor : ItemBasedVisitor() {
         var qualifiedProducts: Set<String> = emptySet()
             private set(value) {
                 field = value

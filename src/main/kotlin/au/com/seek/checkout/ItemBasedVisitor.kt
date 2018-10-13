@@ -1,6 +1,6 @@
 package au.com.seek.checkout
 
-abstract class SimpleBaseVisitor : PricingRule.Visitor {
+abstract class ItemBasedVisitor : PricingRule.Visitor {
     override fun visit(checkout: Checkout) {
         checkout.items
                 .filterNot(Checkout.Item::isFinal)

@@ -2,7 +2,7 @@ package au.com.seek.checkout.pricingrules
 
 import au.com.seek.checkout.Checkout
 import au.com.seek.checkout.PricingRule
-import au.com.seek.checkout.SimpleBaseVisitor
+import au.com.seek.checkout.ItemBasedVisitor
 
 class ForEveryXOtherPurchaseDiscount(
         val productName: String,
@@ -13,7 +13,7 @@ class ForEveryXOtherPurchaseDiscount(
 ) : PricingRule {
     override fun createVisitor(): Visitor = Visitor()
 
-    inner class Visitor : SimpleBaseVisitor() {
+    inner class Visitor : ItemBasedVisitor() {
         private var remaining = 0
 
         override fun visit(checkout: Checkout) {

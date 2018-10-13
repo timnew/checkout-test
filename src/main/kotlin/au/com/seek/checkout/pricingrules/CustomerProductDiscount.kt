@@ -1,7 +1,7 @@
 package au.com.seek.checkout.pricingrules
 
 import au.com.seek.checkout.Checkout
-import au.com.seek.checkout.SimpleBaseVisitor
+import au.com.seek.checkout.ItemBasedVisitor
 import au.com.seek.checkout.PricingRule
 
 class CustomerProductDiscount(
@@ -11,7 +11,7 @@ class CustomerProductDiscount(
         override val name: String = "$customer $productName for discount price $discountPrice",
         override val priority: Int = PricingRule.DEFAULT_PRIORITY) : PricingRule {
 
-    override fun createVisitor(): PricingRule.Visitor = object : SimpleBaseVisitor() {
+    override fun createVisitor(): PricingRule.Visitor = object : ItemBasedVisitor() {
         override fun applyRule(item: Checkout.Item) {
             item.adjustPrice(discountPrice)
         }
